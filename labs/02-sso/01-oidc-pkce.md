@@ -30,7 +30,9 @@ npm install
 npm start
 ```
 
-Open http://localhost:8080 → **Sign in with Okta** as **Test User**. Jamie should be denied if only Engineering is assigned.
+Open http://localhost:8080 → **Sign in with Okta** as **Test User**. Jamie (not in Engineering) should be **denied**. Okta often renders that as a **400 Bad Request** on the Okta page, or `access_denied` on `/login/callback`. That is the assignment working, not a broken redirect.
+
+Restart `npm start` after pulling so the callback page labels `access_denied` as expected.
 
 ## Decode the ID token
 

@@ -96,14 +96,21 @@ const server = createServer(async (req, res) => {
   if (req.method === "GET" && url.pathname === "/login/callback") {
     const err = url.searchParams.get("error");
     if (err) {
+      const description = url.searchParams.get("error_description") || "";
+      const denied = err === "access_denied";
       html(
         res,
-        400,
+        denied ? 403 : 400,
         page(
-          "OIDC error",
-          `<h1>Okta returned an error</h1>
-           <pre>${err}\n${url.searchParams.get("error_description") || ""}</pre>
-           <p><a href="/">Home</a></p>`,
+          denied ? "Access denied" : "OIDC error",
+          denied
+            ? `<h1>Access denied</h1>
+               <p>Expected for a user who is <strong>not</strong> in Engineering (for example Jamie), if Lab OIDC is assigned only to that group.</p>
+               <pre>${err}\n${description}</pre>
+               <p>Sign in as Test User to see ID token claims. <a href="/">Home</a></p>`
+            : `<h1>Okta returned an error</h1>
+               <pre>${err}\n${description}</pre>
+               <p><a href="/">Home</a></p>`,
         ),
       );
       return;
