@@ -1,0 +1,41 @@
+# Local org notes (URLs, usernames — never commit)
+notes.local.md
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+okta-api-token*
+terraform.tfvars
+terraform.tfvars.json
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Node
+node_modules/
+npm-debug.log*
+dist/
+coverage/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

@@ -1,0 +1,15 @@
+# Copy this file to notes.local.md (gitignored). Do not commit real values.
+
+Admin Console: https://YOUR-ORG-admin.okta.com/
+End-user dashboard: https://YOUR-ORG.okta.com/
+Org name (from the sign-in page):
+
+Super Admin username:
+Test user username:
+Test user has admin roles? (must be no)
+
+Integrator Free Plan limits in play:
+- 10 active users
+- 5 Workflows
+- Email templates not editable
+- Org deactivates after 90 days idle

@@ -1,0 +1,4 @@
+username,firstName,lastName,email,department
+alex.engineer,Alex,Engineer,REPLACE+alex@example.com,Engineering
+sam.contractor,Sam,Contractor,REPLACE+sam@example.com,Contractors
+jamie.help,Jamie,Help,REPLACE+jamie@example.com,Support
