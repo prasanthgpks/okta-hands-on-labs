@@ -3,41 +3,51 @@
 **Time:** 2.5h  
 **Goal:** SSO for a modern app using OpenID Connect, not SAML.
 
+Sample in this repo: [apps/oidc-spa](../../apps/oidc-spa).
+
 ## Create the Okta app
 
-1. **Applications → Create App Integration → OIDC**.
-2. Choose **Single-Page Application** (or **Web** if you pick a server sample).
-3. Grant type: **Authorization Code** with **PKCE** (SPA: PKCE required; do not enable implicit).
-4. Sign-in redirect: `http://localhost:8080/login/callback` (match the sample; change the port if the sample uses 3000).
-5. Sign-out redirect: `http://localhost:8080`.
-6. Assign **Engineering** (group), not individuals.
-7. Copy **Client ID**. There is no client secret on a public SPA.
+1. **Applications → Create App Integration → OIDC → Single-Page Application**.
+2. Grant type: **Authorization Code** + **PKCE**. Do not enable implicit.
+3. Sign-in redirect URIs: `http://localhost:8080/login/callback`
+4. Sign-out redirect URIs: `http://localhost:8080`
+5. Controlled access: **Skip group assignment** in the wizard if it offers Everyone, then **Assignments → Engineering only**. Unassign **Everyone** (same trap as Lab 1.3).
+6. Copy **Client ID**. A SPA has no client secret.
 
-## Run a sample
+## Run the lab app
 
-Use an official sample, not a random blog clone:
+From the repo root, copy `.env.example` to `.env` if you do not have one yet:
 
-- [okta-samples](https://github.com/okta-samples) — pick a SPA or Express hosted-login sample
-- Or the Okta-hosted Sign-In Widget sample from [developer docs](https://developer.okta.com/docs/)
+```
+OKTA_ISSUER=https://YOUR-ORG.okta.com/oauth2/default
+OKTA_CLIENT_ID=0oa...
+OKTA_REDIRECT_URI=http://localhost:8080/login/callback
+```
 
-Set issuer to `https://YOUR-ORG.okta.com/oauth2/default` (or the org authorization server the sample documents) and the client ID from above.
+```powershell
+cd apps/oidc-spa
+npm install
+npm start
+```
+
+Open http://localhost:8080 → **Sign in with Okta** as **Test User**. Jamie should be denied if only Engineering is assigned.
 
 ## Decode the ID token
 
-After a successful login, copy the ID token to a JWT decoder you trust (or `jwt.ms` / local decode). Record:
+The callback page shows verified claims. Record:
 
-- `iss` — must be your org / authorization server
-- `aud` — client ID
-- `sub` — user id
-- `groups` or custom claims — may be missing until you add a groups claim (do that if the sample expects groups)
+- `iss` — `https://YOUR-ORG.okta.com/oauth2/default`
+- `aud` — the SPA client ID
+- `sub` — Test User’s Okta user id
+- `email` / `name` — from the `profile` / `email` scopes
 
 ## Break it
 
-Change the redirect URI in Okta to a wrong path. Login must fail. Fix it. That error is the one you will see at work.
+In Okta, change the sign-in redirect to `http://localhost:8080/wrong`. Sign in again. You should get a redirect URI mismatch. Put the correct URI back.
 
 ## Pass when
 
-A real app redirects to Okta, comes back authenticated, and you can explain each token claim.
+A real app redirects to Okta, comes back authenticated, and you can explain `iss`, `aud`, and `sub`.
 
 ## Next
 
