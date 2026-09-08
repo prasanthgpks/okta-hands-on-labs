@@ -1,0 +1,14 @@
+---
+description: Commit and push lab instruction updates to GitHub without asking
+alwaysApply: true
+---
+
+# Auto-push to GitHub
+
+After changing tracked lab materials (`labs/`, `apps/`, `README.md`, `SECURITY.md`, `.cursor/`), **commit and `git push origin HEAD`** in the same turn. Do not wait to be asked.
+
+Never commit or push `notes.local.md`, `.env`, API tokens, Terraform state, or recovery codes. `git add -A` is fine only because `.gitignore` excludes those; still check `git status` before commit.
+
+Repo: `https://github.com/prasanthgpks/okta-hands-on-labs` (public). Prefer one short commit per batch of related file changes.
+
+A project `stop` hook also pushes leftover allowed files when the turn ends. That does not replace doing the push yourself when you edited those files.
