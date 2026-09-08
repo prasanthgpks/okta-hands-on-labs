@@ -25,6 +25,8 @@ Catalog with pass criteria: [labs/README.md](labs/README.md).
 3. One lab per sitting. Sign in as the test user after every access change.
 4. Stay under **10 active users** and **5 Workflows**. Deactivate extras instead of accumulating them.
 
+Lab file changes are committed and pushed to this GitHub repo automatically when an agent turn ends (`notes.local.md` and `.env` stay local).
+
 Admin Console is `https://YOUR-ORG-admin.okta.com/`. End-user dashboard is `https://YOUR-ORG.okta.com/`.
 
 ## Out of scope
