@@ -48,6 +48,7 @@ AD is authoritative for create / update / disable. Okta does not invent ABC empl
 | 7.3 Joiner / mover / leaver | 2h | [03-jml.md](03-jml.md) |
 | 7.4 Admin roles via groups | 1.5h | [04-admin-rbac.md](04-admin-rbac.md) |
 | 7.5 Deliverables | 1.5h | [05-deliverables.md](05-deliverables.md) |
+| 7.6 Implementation log | — | [06-implementation-log.md](06-implementation-log.md) |
 
 ## When to run this
 

@@ -29,3 +29,4 @@ Workforce Identity · Integrator Free Plan · ~32 hours plus ~11.5h AD project. 
 | 7.3 | [AD JML](07-ad-integration/03-jml.md) | 2h | Joiner, mover, leaver proven from AD changes |
 | 7.4 | [Admin via groups](07-ad-integration/04-admin-rbac.md) | 1.5h | Contractor has no admin; roles are group-based |
 | 7.5 | [AD project deliverables](07-ad-integration/05-deliverables.md) | 1.5h | Architecture, rules, test cases, screenshots complete |
+| 7.6 | [ABC Tech implementation log](07-ad-integration/06-implementation-log.md) | — | Architecture, AD design, agent svc, remaining JML/admin checkboxes |

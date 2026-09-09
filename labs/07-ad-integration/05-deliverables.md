@@ -1,7 +1,7 @@
 # Lab 7.5 — Deliverables (ABC Tech)
 
 **Time:** 1.5h  
-**Goal:** Project artifacts. Store screenshots locally (not in git if they show emails). Copy the tables into `notes.local.md` or a private doc.
+**Goal:** Project artifacts. Store screenshots locally (not in git if they show emails). The running write-up is [Lab 7.6 — implementation log](06-implementation-log.md).
 
 ## Architecture
 
