@@ -21,7 +21,7 @@ Stay inside **10 active users**. Deactivate Lab 4.2 throwaways first.
 
 ## Mental model for later
 
-When you federate AD/Entra, the **app as source** vs **Okta as source** switch is this lab at scale. Mapping and matching rules are the same idea.
+When you federate AD/Entra, the **app as source** vs **Okta as source** switch is this lab at scale. Mapping and matching rules are the same idea. The full project is [Week 7 — AD integration](../07-ad-integration/README.md).
 
 ## Pass when
 
@@ -29,4 +29,4 @@ A second import updates attributes and you can explain Okta's matching rule in o
 
 ## Next
 
-[Week 5 — APIs](../05-apis/README.md)
+[Week 5 — APIs](../05-apis/README.md) or [Week 7 — AD as source](../07-ad-integration/README.md)

@@ -1,6 +1,6 @@
 # Okta Hands-On Labs
 
-Six-week path for **Okta Workforce Identity Cloud** on a free [Integrator Free Plan](https://developer.okta.com/signup/) org. About 32 hours. Identity Engine. Not Customer Identity Cloud / Auth0.
+Six-week Workforce Identity path on a free [Integrator Free Plan](https://developer.okta.com/signup/) org, plus an optional **AD as source of truth** project (Week 7) that uses the same tenant.
 
 You click in Admin Console, then prove it as a **non-admin test user**. If something fails, read **System Log** before changing a second setting.
 
@@ -15,6 +15,7 @@ You click in Admin Console, then prove it as a **non-admin test user**. If somet
 | 4 | [labs/04-lifecycle](labs/04-lifecycle/README.md) | SCIM, joiner/mover/leaver, import |
 | 5 | [labs/05-apis](labs/05-apis/README.md) | Management API, authz server, JWT API |
 | 6 | [labs/06-automate](labs/06-automate/README.md) | Event hooks, Workflows, Terraform |
+| 7 | [labs/07-ad-integration](labs/07-ad-integration/README.md) | AD Agent, ABC Tech JML, admin groups |
 
 Catalog with pass criteria: [labs/README.md](labs/README.md).
 
@@ -31,7 +32,7 @@ Admin Console is `https://YOUR-ORG-admin.okta.com/`. End-user dashboard is `http
 
 ## Out of scope
 
-Customer Identity Cloud (Auth0), Access Gateway, Privileged Access, and production AD/Entra inbound federation. Finish this path first.
+Customer Identity Cloud (Auth0), Access Gateway, Privileged Access, and **production** AD/Entra. Lab AD against this Integrator org is Week 7.
 
 ## Docs
 

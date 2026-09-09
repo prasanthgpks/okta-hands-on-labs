@@ -1,6 +1,6 @@
 # Lab catalog
 
-Workforce Identity · Integrator Free Plan · ~32 hours. Mark a lab done only when the **Pass when** line is true in *your* org.
+Workforce Identity · Integrator Free Plan · ~32 hours plus ~11.5h AD project. Mark a lab done only when the **Pass when** line is true in *your* org.
 
 | ID | Lab | Time | Pass when |
 |----|-----|------|-----------|
@@ -23,3 +23,9 @@ Workforce Identity · Integrator Free Plan · ~32 hours. Mark a lab done only wh
 | 6.1 | [Event hooks](06-automate/01-event-hooks.md) | 1.5h | Creating a user produces a webhook with the matching user id |
 | 6.2 | [Workflows](06-automate/02-workflows.md) | 2h | One flow runs on user create; you stay at ≤5 flows |
 | 6.3 | [Terraform](06-automate/03-terraform.md) | 1.5h | Destroy + apply recreates the group and app assignment |
+| 7.0 | [Lab AD forest](07-ad-integration/00-lab-ad.md) | 3h | abctech.com OUs, groups, and six users exist |
+| 7.1 | [AD Agent and import](07-ad-integration/01-agent-and-import.md) | 2h | ABC users sourced from AD; service accounts excluded |
+| 7.2 | [AD group rules](07-ad-integration/02-groups-and-rules.md) | 1.5h | Okta groups follow AD without manual person assigns |
+| 7.3 | [AD JML](07-ad-integration/03-jml.md) | 2h | Joiner, mover, leaver proven from AD changes |
+| 7.4 | [Admin via groups](07-ad-integration/04-admin-rbac.md) | 1.5h | Contractor has no admin; roles are group-based |
+| 7.5 | [AD project deliverables](07-ad-integration/05-deliverables.md) | 1.5h | Architecture, rules, test cases, screenshots complete |
