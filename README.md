@@ -16,7 +16,7 @@ You click in Admin Console, then prove it as a **non-admin test user**. If somet
 | 5 | [labs/05-apis](labs/05-apis/README.md) | Management API, authz server, JWT API |
 | 6 | [labs/06-automate](labs/06-automate/README.md) | Event hooks, Workflows, Terraform |
 | 7 | [labs/07-ad-integration](labs/07-ad-integration/README.md) | AD Agent, ABC Tech JML, admin groups |
-| Ref | [labs/reference](labs/reference/README.md) | Use-case field guide (not a numbered lab) |
+| Ref | [labs/reference](labs/reference/README.md) | Overview, concept map, use-case field guide (markdown) |
 
 Catalog with pass criteria: [labs/README.md](labs/README.md).
 

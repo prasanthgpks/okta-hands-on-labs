@@ -30,4 +30,6 @@ Workforce Identity · Integrator Free Plan · ~32 hours plus ~11.5h AD project. 
 | 7.4 | [Admin via groups](07-ad-integration/04-admin-rbac.md) | 1.5h | Contractor has no admin; roles are group-based |
 | 7.5 | [AD project deliverables](07-ad-integration/05-deliverables.md) | 1.5h | Architecture, rules, test cases, screenshots complete |
 | 7.6 | [ABC Tech implementation log](07-ad-integration/06-implementation-log.md) | — | Architecture, AD design, agent svc, remaining JML/admin checkboxes |
-| Ref | [Okta use case field guide](reference/okta-use-case-field-guide.html) | — | Ten Okta problems/products/protocols (browser HTML) |
+| Ref | [Okta overview](reference/okta-overview.md) | — | Stakeholder intro: two clouds, SSO/MFA/UD/lifecycle |
+| Ref | [Okta concept map](reference/okta-concept-map.md) | — | Org, directory, groups, apps, policies, System Log |
+| Ref | [Okta use case field guide](reference/okta-use-case-field-guide.md) | — | Ten Okta problems/products/protocols |
