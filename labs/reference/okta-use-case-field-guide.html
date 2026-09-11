@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Okta Use Case Field Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #F6F7FB;
+    --surface: #FFFFFF;
+    --surface-2: #EEF0F7;
+    --text: #1A1D2B;
+    --text-muted: #5B6178;
+    --border: #DFE2ED;
+    --primary: #2F3A72;
+    --accent: #B9791F;
+    --accent-soft: #F5E6C8;
+    --shadow: 0 1px 2px rgba(26,29,43,0.04), 0 8px 24px rgba(26,29,43,0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12141C;
+      --surface: #1A1D28;
+      --surface-2: #20232F;
+      --text: #E8E9F1;
+      --text-muted: #9BA1B8;
+      --border: #2C3040;
+      --primary: #93A2F2;
+      --accent: #E1A84A;
+      --accent-soft: #382C15;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #12141C;
+    --surface: #1A1D28;
+    --surface-2: #20232F;
+    --text: #E8E9F1;
+    --text-muted: #9BA1B8;
+    --border: #2C3040;
+    --primary: #93A2F2;
+    --accent: #E1A84A;
+    --accent-soft: #382C15;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+    padding: 0 20px;
+  }
+
+  .wrap { max-width: 980px; margin: 0 auto; padding-block: 3rem 4rem; }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin: 0 0 0.9rem;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 4.5vw, 2.9rem);
+    line-height: 1.08;
+    margin: 0 0 0.85rem;
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+
+  .subtitle {
+    font-size: 1.08rem;
+    color: var(--text-muted);
+    max-width: 62ch;
+    line-height: 1.55;
+    margin: 0 0 2.1rem;
+  }
+
+  nav.toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 3.2rem;
+    padding-bottom: 2.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav.toc a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    text-decoration: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    transition: border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  nav.toc a:hover, nav.toc a:focus-visible { border-color: var(--accent); color: var(--text); }
+  nav.toc a span { color: var(--accent); font-weight: 500; }
+
+  .usecase {
+    display: grid;
+    grid-template-columns: minmax(240px, 1fr) minmax(320px, 1.35fr);
+    gap: 2.4rem;
+    padding-block: 2.6rem;
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: 1.5rem;
+  }
+  .usecase:last-of-type { border-bottom: none; }
+
+  @media (max-width: 760px) {
+    .usecase { grid-template-columns: 1fr; gap: 1.3rem; }
+  }
+
+  .uc-index {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    margin: 0 0 0.5rem;
+  }
+
+  .usecase h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin: 0 0 0.65rem;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  .problem {
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 0.98rem;
+    margin: 0 0 0.85rem;
+    line-height: 1.5;
+    border-left: 2px solid var(--border);
+    padding-left: 0.8rem;
+  }
+
+  .usecase p.desc {
+    font-size: 0.97rem;
+    line-height: 1.62;
+    color: var(--text);
+    margin: 0 0 1.1rem;
+    max-width: 42ch;
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 0.22rem 0.55rem;
+    border-radius: 5px;
+  }
+
+  figure { margin: 0; }
+  .diagram-frame {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.1rem 0.7rem;
+    box-shadow: var(--shadow);
+  }
+  svg.diagram { width: 100%; height: auto; display: block; overflow: visible; }
+  figcaption {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 0.6rem;
+    line-height: 1.4;
+  }
+
+  .dg-node { fill: var(--surface); stroke: var(--border); stroke-width: 1.5; }
+  .dg-okta { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.6; }
+  .dg-text { fill: var(--text); font-family: 'IBM Plex Sans', sans-serif; font-size: 12.5px; font-weight: 500; }
+  .dg-sub { fill: var(--text-muted); font-family: 'IBM Plex Sans', sans-serif; font-size: 10.5px; }
+  .dg-label { fill: var(--text-muted); font-family: 'IBM Plex Mono', monospace; font-size: 10px; }
+  .dg-label-accent { fill: var(--accent); font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; }
+  .dg-arrow { stroke: var(--text-muted); stroke-width: 1.4; fill: none; }
+  .dg-arrow-accent { stroke: var(--accent); stroke-width: 1.7; fill: none; }
+  .dg-boundary { fill: none; stroke: var(--border); stroke-width: 1.2; stroke-dasharray: 5 4; }
+  .dg-boundary-label { fill: var(--text-muted); font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  table.summary {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.92rem;
+  }
+  table.summary th, table.summary td {
+    text-align: left;
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+  table.summary th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  table.summary td.mono { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--text-muted); }
+  .table-wrap { overflow-x: auto; }
+
+  section.closing { padding-top: 2.6rem; }
+  section.closing h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    margin: 0 0 0.3rem;
+  }
+  section.closing p { color: var(--text-muted); font-size: 0.95rem; max-width: 62ch; line-height: 1.55; }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px;
+    color: var(--text-muted);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Identity &amp; Access Management — Field Guide</p>
+  <h1>Ten problems Okta actually solves</h1>
+  <p class="subtitle">Each one paired with the architecture behind it — who talks to whom, what protocol carries the exchange, and where Okta sits in the flow.</p>
+
+  <nav class="toc" aria-label="Jump to use case">
+    <a href="#uc1"><span>01</span> SSO</a>
+    <a href="#uc2"><span>02</span> Adaptive MFA</a>
+    <a href="#uc3"><span>03</span> Lifecycle Mgmt</a>
+    <a href="#uc4"><span>04</span> Universal Directory</a>
+    <a href="#uc5"><span>05</span> API Access</a>
+    <a href="#uc6"><span>06</span> Customer Identity</a>
+    <a href="#uc7"><span>07</span> B2B Federation</a>
+    <a href="#uc8"><span>08</span> Zero Trust</a>
+    <a href="#uc9"><span>09</span> Governance</a>
+    <a href="#uc10"><span>10</span> AI Agent Identity</a>
+  </nav>
+
+  <!-- 01 SSO -->
+  <section class="usecase" id="uc1">
+    <div>
+      <p class="uc-index">01 / 10</p>
+      <h2>Single sign-on</h2>
+      <p class="problem">Employees juggle a different login for every app.</p>
+      <p class="desc">One authentication at Okta issues a session every connected app trusts, so a user signs in once and moves between tools without re-entering credentials.</p>
+      <div class="tags"><span class="tag">SAML</span><span class="tag">OIDC</span><span class="tag">Session Cookie</span></div>
+    </div>
+    <figure>
+      <div class="diagram-frame">
+        <svg class="diagram" viewBox="0 0 520 220" role="img" aria-label="User authenticates once at Okta, which issues trusted sessions to three separate apps">
+          <defs>
+            <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker>
+            <marker id="a1b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="dg-node" x="20" y="90" width="90" height="46" rx="8"/>
+          <rect class="dg-okta" x="190" y="80" width="110" height="66" rx="9"/>
+          <rect class="dg-node" x="415" y="20" width="90" height="46" rx="8"/>
+          <rect class="dg-node" x="415" y="90" width="90" height="46" rx="8"/>
+          <rect class="dg-node" x="415" y="158" width="90" height="46" rx="8"/>
+
+          <line class="dg-arrow" x1="110" y1="113" x2="185" y2="113" marker-end="url(#a1)"/>
+          <text class="dg-label" x="147" y="103" text-anchor="middle">1. login</text>
+          <line class="dg-arrow-accent" x1="300" y1="95" x2="410" y2="45" marker-end="url(#a1b)"/>
+          <line class="dg-arrow-accent" x1="300" y1="113" x2="410" y2="113" marker-end="url(#a1b)"/>
+          <line class="dg-arrow-accent" x1="300" y1="131" x2="410" y2="181" marker-end="url(#a1b)"/>
+          <text class="dg-label-accent" x="358" y="65" text-anchor="middle">2. SSO token</text>
+
+          <text class="dg-text" x="65" y="118" text-anchor="middle">User</text>
+          <text class="dg-text" x="245" y="109" text-anchor="middle">Okta</text>
+          <text class="dg-sub" x="245" y="124" text-anchor="middle">issues session</text>
+          <text class="dg-text" x="460" y="48" text-anchor="middle">App A</text>
+          <text class="dg-text" x="460" y="118" text-anchor="middle">App B</text>
+          <text class="dg-text" x="460" y="186" text-anchor="middle">App C</text>
+        </svg>
+      </div>
+      <figcaption>One login at Okta fans out into trusted sessions across every connected app.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 02 MFA -->
+  <section class="usecase" id="uc2">
+    <div>
+      <p class="uc-index">02 / 10</p>
+      <h2>Adaptive multi-factor authentication</h2>
+      <p class="problem">A correct password isn't proof the right person is typing it.</p>
+      <p class="desc">Okta scores context — device, location, network reputation — at sign-in, and only interrupts the user with a second factor when that score crosses a risk threshold.</p>
+      <div class="tags"><span class="tag">Okta Verify</span><span class="tag">WebAuthn</span><span class="tag">Risk Signal</span></div>
+    </div>
+    <figure>
+      <div class="diagram-frame">
+        <svg class="diagram" viewBox="0 0 520 230" role="img" aria-label="Okta risk engine evaluates sign in context and only requests a second factor for high risk attempts">
+          <defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs>
+          <rect class="dg-node" x="15" y="92" width="95" height="46" rx="8"/>
+          <polygon class="dg-okta" points="245,70 320,115 245,160 170,115"/>
+          <rect class="dg-node" x="405" y="10" width="105" height="46" rx="8"/>
+          <rect class="dg-node" x="330" y="160" width="120" height="46" rx="8"/>
+
+          <line class="dg-arrow" x1="110" y1="115" x2="178" y2="115" marker-end="url(#a2)"/>
+          <line class="dg-arrow" x1="300" y1="90" x2="405" y2="35" marker-end="url(#a2)"/>
+          <text class="dg-label" x="365" y="52" text-anchor="middle">low risk</text>
+          <line class="dg-arrow" x1="300" y1="140" x2="380" y2="185" marker-end="url(#a2)"/>
+          <text class="dg-label" x="358" y="205" text-anchor="middle">high risk</text>
+          <line class="dg-arrow" x1="390" y1="160" x2="450" y2="60" marker-end="url(#a2)"/>
+
+          <text class="dg-text" x="62" y="120" text-anchor="middle">Sign-in</text>
+          <text class="dg-text" x="245" y="111" text-anchor="middle">Okta risk</text>
+          <text class="dg-text" x="245" y="126" text-anchor="middle">engine</text>
+          <text class="dg-text" x="457" y="38" text-anchor="middle">Access granted</text>
+          <text class="dg-text" x="390" y="182" text-anchor="middle">Step-up: push</text>
+          <text class="dg-sub" x="390" y="196" text-anchor="middle">or OTP prompt</text>
+        </svg>
+      </div>
+      <figcaption>Friction scales with risk instead of being applied uniformly to every login.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 03 Lifecycle -->
+  <section class="usecase" id="uc3">
+    <div>
+      <p class="uc-index">03 / 10</p>
+      <h2>Lifecycle management</h2>
+      <p class="problem">Manual account creation and revocation is slow, and offboarding gets missed.</p>
+      <p class="desc">An HR event — hire, transfer, termination — flows into Okta, which provisions or deprovisions the matching accounts across every downstream app automatically.</p>
+      <div class="tags"><span class="tag">SCIM</span><span class="tag">HRIS-driven</span><span class="tag">JML</span></div>
+    </div>
+    <figure>
+      <div class="diagram-frame">
+        <svg class="diagram" viewBox="0 0 520 220" role="img" aria-label="An HR system event triggers Okta to provision or deprovision accounts across three downstream apps via SCIM">
+          <defs>
+            <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker>
+            <marker id="a3b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="dg-node" x="10" y="88" width="105" height="50" rx="8"/>
+          <rect class="dg-okta" x="190" y="80" width="115" height="66" rx="9"/>
+          <rect class="dg-node" x="415" y="20" width="95" height="46" rx="8"/>
+          <rect class="dg-node" x="415" y="90" width="95" height="46" rx="8"/>
+          <rect class="dg-node" x="415" y="158" width="95" height="46" rx="8"/>
+
+          <line class="dg-arrow" x1="115" y1="113" x2="185" y2="113" marker-end="url(#a3)"/>
+          <text class="dg-label" x="150" y="103" text-anchor="middle">HR event</text>
+          <line class="dg-arrow-accent" x1="305" y1="95" x2="410" y2="45" marker-end="url(#a3b)"/>
+          <line class="dg-arrow-accent" x1="305" y1="113" x2="410" y2="113" marker-end="url(#a3b)"/>
+          <line class="dg-arrow-accent" x1="305" y1="131" x2="410" y2="181" marker-end="url(#a3b)"/>
+          <text class="dg-label-accent" x="360" y="66" text-anchor="middle">SCIM provision</text>
+
+          <text class="dg-text" x="62" y="110" text-anchor="middle">HR System</text>
+          <text class="dg-sub" x="62" y="124" text-anchor="middle">(Workday)</text>
+          <text class="dg-text" x="247" y="107" text-anchor="middle">Okta</text>
+          <text class="dg-sub" x="247" y="122" text-anchor="middle">Lifecycle Mgmt</text>
+          <text class="dg-text" x="462" y="48" text-anchor="middle">M365</text>
+          <text class="dg-text" x="462" y="118" text-anchor="middle">Slack</text>
+          <text class="dg-text" x="462" y="186" text-anchor="middle">Salesforce</text>
+        </svg>
+      </div>
+      <figcaption>Access rights follow HR status directly — no ticket queue in between.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 04 Universal Directory -->
+  <section class="usecase" id="uc4">
+    <div>
+      <p class="uc-index">04 / 10</p>
+      <h2>Universal directory</h2>
+      <p class="problem">Identity data is scattered and inconsistent across systems of record.</p>
+      <p class="desc">Okta ingests identities from Active Directory, the HR system and other sources into one mastered profile per person, so every app reads from a single, current record.</p>
+      <div class="tags"><span class="tag">AD Import</span><span class="tag">Profile Mastering</span></div>
+    </div>
+    <figure>
+      <div class="diagram-frame">
+        <svg class="diagram" viewBox="0 0 520 220" role="img" aria-label="Active Directory, HR system, and a flat file all sync into Okta Universal Directory, which apps then read from">
+          <defs>
+            <marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker>
+            <marker id="a4b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="dg-node" x="10" y="15" width="105" height="44" rx="8"/>
+          <rect class="dg-node" x="10" y="88" width="105" height="44" rx="8"/>
+          <rect class="dg-node" x="10" y="161" width="105" height="44" rx="8"/>
+          <rect class="dg-okta" x="190" y="77" width="130" height="66" rx="9"/>
+          <rect class="dg-node" x="415" y="55" width="95" height="44" rx="8"/>
+          <rect class="dg-node" x="415" y="122" width="95" height="44" rx="8"/>
+
+          <line class="dg-arrow" x1="115" y1="37" x2="185" y2="95" marker-end="url(#a4)"/>
+          <line class="dg-arrow" x1="115" y1="110" x2="185" y2="110" marker-end="url(#a4)"/>
+          <line class="dg-arrow" x1="115" y1="183" x2="185" y2="128" marker-end="url(#a4)"/>
+          <line class="dg-arrow-accent" x1="320" y1="110" x2="410" y2="110" marker-end="url(#a4b)"/>
+          <text class="dg-label-accent" x="365" y="98" text-anchor="middle">one profile</text>
+
+          <text class="dg-text" x="62" y="41" text-anchor="middle">Active Dir.</text>
+          <text class="dg-text" x="62" y="114" text-anchor="middle">HR System</text>
+          <text class="dg-text" x="62" y="187" text-anchor="middle">Flat file / CSV</text>
+          <text class="dg-text" x="255" y="104" text-anchor="middle">Universal</text>
+          <text class="dg-text" x="255" y="119" text-anchor="middle">Directory</text>
+          <text class="dg-text" x="462" y="81" text-anchor="middle">Apps</text>
+          <text class="dg-text" x="462" y="148" text-anchor="middle">Reports</text>
+        </svg>
+      </div>
+      <figcaption>Conflicting source records get resolved once, upstream of every app.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 05 API Access -->
+  <section class="usecase" id="uc5">
+    <div>
+      <p class="uc-index">05 / 10</p>
+      <h2>API access management</h2>
+      <p class="problem">APIs need a scalable way to verify a caller's identity and permissions.</p>
+      <p class="desc">A client gets a token from Okta's authorization server; the API validates that token's signature and scopes locally against Okta's published keys, with no callback on every request.</p>
+      <div class="tags"><span class="tag">OAuth2</span><span class="tag">JWT</span><span class="tag">JWKS</span></div>
+    </div>
+    <figure>
+      <div class="diagram-frame">
+        <svg class="diagram" viewBox="0 0 520 220" role="img" aria-label="A client gets a JWT from Okta, calls the API with it, and the API validates the token signature against Okta's JWKS endpoint">
+          <defs><marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs>
+          <rect class="dg-node" x="10" y="80" width="95" height="50" rx="8"/>
+          <rect class="dg-okta" x="185" y="15" width="110" height="52" rx="9"/>
+          <rect class="dg-node" x="350" y="88" width="95" height="48" rx="8"/>
+
+          <line class="dg-arrow" x1="105" y1="88" x2="180" y2="52" marker-end="url(#a5)"/>
+          <text class="dg-label" x="140" y="58" text-anchor="middle">1. token req.</text>
+          <line class="dg-arrow" x1="182" y1="60" x2="107" y2="108" marker-end="url(#a5)"/>
+          <text class="dg-label" x="148" y="134" text-anchor="middle">2. JWT</text>
+          <line class="dg-arrow" x1="105" y1="118" x2="345" y2="118" marker-end="url(#a5)"/>
+          <text class="dg-label" x="225" y="108" text-anchor="middle">3. call + bearer token</text>
+          <line class="dg-arrow" x1="400" y1="88" x2="272" y2="68" stroke-dasharray="4 3" marker-end="url(#a5)"/>
+          <text class="dg-label" x="335" y="165" text-anchor="middle">4. validate sig. via JWKS</text>
+
+          <text class="dg-text" x="57" y="102" text-anchor="middle">Client</text>
+          <text class="dg-sub" x="57" y="116" text-anchor="middle">app</text>
+          <text class="dg-text" x="240" y="37" text-anchor="middle">Okta</text>
+          <text class="dg-sub" x="240" y="51" text-anchor="middle">Auth Server</text>
+          <text class="dg-text" x="397" y="116" text-anchor="middle">API</text>
+        </svg>
+      </div>
+      <figcaption>Signature validation happens at the API itself — stateless, and it scales.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 06 CIAM -->
+  <section class="usecase" id="uc6">
+    <div>
+      <p class="uc-index">06 / 10</p>
+      <h2>Customer identity (CIAM)</h2>
+      <p class="problem">Customer-facing apps need frictionless signup without owning password security.</p>
+      <p class="desc">Auth0 — Okta's customer identity platform — hosts login and signup, including social and passwordless options, then hands the app a token, scaling to millions of end users.</p>
+      <div class="tags"><span class="tag">Auth0</span><span class="tag">Social Login</span><span class="tag">Passwordless</span></div>
+    </div>
+    <figure>
+      <div class="diagram-frame">
+        <svg class="diagram" viewBox="0 0 520 220" role="img" aria-label="A customer authenticates via Auth0 Universal Login, which issues a token consumed by the app and its backend API">
+          <defs>
+            <marker id="a6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker>
+            <marker id="a6b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="dg-node" x="10" y="88" width="95" height="46" rx="8"/>
+          <rect class="dg-okta" x="180" y="70" width="140" height="82" rx="9"/>
+          <rect class="dg-node" x="410" y="88" width="100" height="46" rx="8"/>
+
+          <line class="dg-arrow" x1="105" y1="111" x2="175" y2="111" marker-end="url(#a6)"/>
+          <line class="dg-arrow-accent" x1="320" y1="111" x2="405" y2="111" marker-end="url(#a6b)"/>
+          <text class="dg-label-accent" x="362" y="100" text-anchor="middle">token</text>
+
+          <text class="dg-text" x="57" y="116" text-anchor="middle">Customer</text>
+          <text class="dg-text" x="250" y="98" text-anchor="middle">Auth0</text>
+          <text class="dg-sub" x="250" y="112" text-anchor="middle">Universal Login</text>
+          <text class="dg-label" x="250" y="130" text-anchor="middle">email · Google · OTP</text>
+          <text class="dg-text" x="460" y="116" text-anchor="middle">Your app</text>
+          <text class="dg-sub" x="460" y="164" text-anchor="middle">→ Backend API</text>
+        </svg>
+      </div>
+      <figcaption>The app never stores or checks a customer password directly.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 07 B2B Federation -->
+  <section class="usecase" id="uc7">
+    <div>
+      <p class="uc-index">07 / 10</p>
+      <h2>B2B partner federation</h2>
+      <p class="problem">A partner wants their staff to use their own credentials, not a new account you manage.</p>
+      <p class="desc">Okta federates trust with a partner's identity provider over SAML or OIDC, so their employees authenticate at their own IdP and arrive pre-verified — no shared passwords, no duplicate accounts.</p>
+      <div class="tags"><span class="tag">SAML</span><span class="tag">OIDC Federation</span><span class="tag">IdP-to-IdP</span></div>
+    </div>
+    <figure>
+      <div class="diagram-frame">
+        <svg class="diagram" viewBox="0 0 520 220" role="img" aria-label="A partner employee authenticates at their own identity provider, which federates trust across an organization boundary into your Okta and then your app">
+          <defs><marker id="a7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs>
+          <rect class="dg-boundary" x="8" y="10" width="200" height="150" rx="10"/>
+          <rect class="dg-node" x="25" y="45" width="80" height="42" rx="7"/>
+          <rect class="dg-node" x="120" y="100" width="80" height="42" rx="7"/>
+          <rect class="dg-okta" x="285" y="75" width="110" height="58" rx="9"/>
+          <rect class="dg-node" x="470" y="80" width="45" height="46" rx="8"/>
+
+          <text class="dg-boundary-label" x="20" y="28">Partner org</text>
+          <line class="dg-arrow" x1="90" y1="87" x2="140" y2="100" marker-end="url(#a7)"/>
+          <line class="dg-arrow" x1="200" y1="118" x2="280" y2="105" marker-end="url(#a7)" stroke-dasharray="5 4"/>
+          <text class="dg-label" x="245" y="90" text-anchor="middle">SAML/OIDC trust</text>
+          <line class="dg-arrow" x1="395" y1="104" x2="465" y2="104" marker-end="url(#a7)"/>
+
+          <text class="dg-text" x="65" y="70" text-anchor="middle" style="font-size:11.5px">Employee</text>
+          <text class="dg-text" x="160" y="125" text-anchor="middle" style="font-size:11.5px">Partner IdP</text>
+          <text class="dg-text" x="340" y="99" text-anchor="middle">Okta</text>
+          <text class="dg-sub" x="340" y="113" text-anchor="middle">Identity broker</text>
+          <text class="dg-sub" x="492" y="107" text-anchor="middle" style="font-size:11px">App</text>
+        </svg>
+      </div>
+      <figcaption>Trust crosses the organizational boundary; passwords never do.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 08 Zero Trust -->
+  <section class="usecase" id="uc8">
+    <div>
+      <p class="uc-index">08 / 10</p>
+      <h2>Zero trust / device-bound access</h2>
+      <p class="problem">A correct password from an untrusted device is still a risk.</p>
+      <p class="desc">Okta checks device posture — managed, compliant, patched — alongside user identity, and can block access from unmanaged or risky devices even when the credentials are valid.</p>
+      <div class="tags"><span class="tag">Device Trust</span><span class="tag">MDM Signal</span><span class="tag">Conditional Access</span></div>
+    </div>
+    <figure>
+      <div class="diagram-frame">
+        <svg class="diagram" viewBox="0 0 520 220" role="img" aria-label="A user and device pass through a posture check before Okta's policy engine grants or blocks access based on compliance">
+          <defs><marker id="a8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs>
+          <rect class="dg-node" x="10" y="88" width="110" height="50" rx="8"/>
+          <polygon class="dg-okta" points="255,70 330,113 255,156 180,113"/>
+          <rect class="dg-node" x="415" y="20" width="100" height="46" rx="8"/>
+          <rect class="dg-node" x="405" y="158" width="110" height="46" rx="8"/>
+
+          <line class="dg-arrow" x1="120" y1="113" x2="185" y2="113" marker-end="url(#a8)"/>
+          <text class="dg-label" x="150" y="103" text-anchor="middle">posture signal</text>
+          <line class="dg-arrow" x1="310" y1="90" x2="410" y2="45" marker-end="url(#a8)"/>
+          <text class="dg-label" x="372" y="60" text-anchor="middle">compliant</text>
+          <line class="dg-arrow" x1="310" y1="136" x2="400" y2="180" marker-end="url(#a8)"/>
+          <text class="dg-label" x="368" y="200" text-anchor="middle">non-compliant</text>
+
+          <text class="dg-text" x="65" y="108" text-anchor="middle">User +</text>
+          <text class="dg-text" x="65" y="122" text-anchor="middle">device</text>
+          <text class="dg-text" x="255" y="109" text-anchor="middle">Okta policy</text>
+          <text class="dg-text" x="255" y="123" text-anchor="middle">engine</text>
+          <text class="dg-text" x="465" y="48" text-anchor="middle">Access granted</text>
+          <text class="dg-text" x="460" y="180" text-anchor="middle">Blocked /</text>
+          <text class="dg-text" x="460" y="193" text-anchor="middle">remediate</text>
+        </svg>
+      </div>
+      <figcaption>Identity and device trust are evaluated together, not identity alone.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 09 Governance -->
+  <section class="usecase" id="uc9">
+    <div>
+      <p class="uc-index">09 / 10</p>
+      <h2>Identity governance &amp; certification</h2>
+      <p class="problem">Knowing who <em>can</em> log in isn't the same as knowing who still <em>should</em>.</p>
+      <p class="desc">Okta handles authentication while a governance platform like Saviynt manages access requests, approvals and periodic certification — access that isn't recertified is revoked back through Okta automatically.</p>
+      <div class="tags"><span class="tag">IGA</span><span class="tag">SoD</span><span class="tag">Access Certification</span></div>
+    </div>
+    <figure>
+      <div class="diagram-frame">
+        <svg class="diagram" viewBox="0 0 520 230" role="img" aria-label="An access request flows through approval and provisioning into Okta, then a periodic certification either leaves access in place or revokes it">
+          <defs><marker id="a9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs>
+          <rect class="dg-node" x="10" y="20" width="100" height="44" rx="8"/>
+          <rect class="dg-node" x="175" y="18" width="110" height="46" rx="8"/>
+          <rect class="dg-okta" x="355" y="18" width="110" height="46" rx="9"/>
+          <rect class="dg-node" x="345" y="122" width="130" height="46" rx="8"/>
+          <rect class="dg-node" x="120" y="168" width="140" height="46" rx="8"/>
+
+          <line class="dg-arrow" x1="110" y1="42" x2="170" y2="42" marker-end="url(#a9)"/>
+          <line class="dg-arrow" x1="285" y1="42" x2="350" y2="42" marker-end="url(#a9)"/>
+          <line class="dg-arrow" x1="410" y1="64" x2="410" y2="118" marker-end="url(#a9)"/>
+          <line class="dg-arrow" x1="345" y1="152" x2="262" y2="188" marker-end="url(#a9)"/>
+          <text class="dg-label" x="300" y="172" text-anchor="middle">not certified</text>
+
+          <text class="dg-text" x="60" y="46" text-anchor="middle">Access request</text>
+          <text class="dg-text" x="230" y="45" text-anchor="middle">Saviynt approval</text>
+          <text class="dg-text" x="410" y="40" text-anchor="middle">Okta /</text>
+          <text class="dg-text" x="410" y="53" text-anchor="middle">app account</text>
+          <text class="dg-text" x="410" y="141" text-anchor="middle">Periodic</text>
+          <text class="dg-text" x="410" y="154" text-anchor="middle">certification</text>
+          <text class="dg-sub" x="410" y="200" text-anchor="middle">certified → access continues</text>
+          <text class="dg-text" x="190" y="196" text-anchor="middle">Access revoked</text>
+        </svg>
+      </div>
+      <figcaption>A closed loop: no access exists that wasn't approved and hasn't been re-verified.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 10 AI Agent -->
+  <section class="usecase" id="uc10">
+    <div>
+      <p class="uc-index">10 / 10</p>
+      <h2>Non-human &amp; AI agent identity</h2>
+      <p class="problem">AI agents and service accounts are a new class of caller that also needs governing.</p>
+      <p class="desc">An agent authenticates with its own client credentials, receives a narrowly scoped, short-lived token for exactly the call it needs to make, and every action it takes is logged under its own identity.</p>
+      <div class="tags"><span class="tag">Client Credentials</span><span class="tag">Token Exchange</span><span class="tag">Non-Human ID</span></div>
+    </div>
+    <figure>
+      <div class="diagram-frame">
+        <svg class="diagram" viewBox="0 0 520 210" role="img" aria-label="An AI agent gets a scoped short lived token from Okta, calls a downstream API, and the action is logged for audit">
+          <defs><marker id="a10" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs>
+          <rect class="dg-node" x="10" y="80" width="100" height="50" rx="8"/>
+          <rect class="dg-okta" x="185" y="15" width="120" height="52" rx="9"/>
+          <rect class="dg-node" x="350" y="88" width="95" height="48" rx="8"/>
+
+          <line class="dg-arrow" x1="108" y1="86" x2="182" y2="50" marker-end="url(#a10)"/>
+          <text class="dg-label" x="135" y="56" text-anchor="middle">creds</text>
+          <line class="dg-arrow" x1="183" y1="58" x2="112" y2="104" marker-end="url(#a10)"/>
+          <line class="dg-arrow" x1="110" y1="112" x2="345" y2="112" marker-end="url(#a10)"/>
+          <text class="dg-label" x="225" y="102" text-anchor="middle">call downstream API</text>
+          <line class="dg-arrow" x1="397" y1="136" x2="397" y2="180" marker-end="url(#a10)" stroke-dasharray="4 3"/>
+          <text class="dg-label" x="397" y="198" text-anchor="middle">action logged for audit</text>
+
+          <text class="dg-text" x="60" y="102" text-anchor="middle">AI agent</text>
+          <text class="dg-sub" x="60" y="116" text-anchor="middle">(non-human)</text>
+          <text class="dg-text" x="245" y="37" text-anchor="middle">Okta</text>
+          <text class="dg-sub" x="245" y="51" text-anchor="middle">scoped short-lived token</text>
+          <text class="dg-text" x="397" y="116" text-anchor="middle">API</text>
+        </svg>
+      </div>
+      <figcaption>The same discipline applied to people — verify, scope narrowly, log everything — applied to software.</figcaption>
+    </figure>
+  </section>
+
+  <section class="closing">
+    <h2>At a glance</h2>
+    <p>The same ten problems, mapped to which Okta product handles them and the protocol doing the work.</p>
+    <div class="table-wrap">
+      <table class="summary">
+        <thead>
+          <tr><th>Use case</th><th>Okta product</th><th>Core mechanism</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Single sign-on</td><td class="mono">Workforce Identity</td><td class="mono">SAML / OIDC</td></tr>
+          <tr><td>Adaptive MFA</td><td class="mono">Workforce Identity</td><td class="mono">Risk-based step-up</td></tr>
+          <tr><td>Lifecycle management</td><td class="mono">Workforce Identity</td><td class="mono">SCIM</td></tr>
+          <tr><td>Universal directory</td><td class="mono">Workforce Identity</td><td class="mono">AD / HRIS import</td></tr>
+          <tr><td>API access management</td><td class="mono">Workforce Identity</td><td class="mono">OAuth2 / JWT</td></tr>
+          <tr><td>Customer identity</td><td class="mono">Auth0 (CIAM)</td><td class="mono">Universal Login</td></tr>
+          <tr><td>B2B partner federation</td><td class="mono">Workforce Identity</td><td class="mono">SAML / OIDC federation</td></tr>
+          <tr><td>Zero trust access</td><td class="mono">Workforce Identity</td><td class="mono">Device posture signal</td></tr>
+          <tr><td>Identity governance</td><td class="mono">+ Saviynt / SailPoint</td><td class="mono">Access certification</td></tr>
+          <tr><td>Non-human / AI identity</td><td class="mono">Workforce Identity</td><td class="mono">Client credentials + token exchange</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>Okta use case field guide — compiled for interview prep</footer>
+</div>
+</body>
+</html>
